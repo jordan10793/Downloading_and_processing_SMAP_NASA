@@ -1,9 +1,8 @@
-# Universidad de Costa Rica
-# Taller especializado en SIG y Teledetección
-# II Ciclo 2018
-# Estudiante: Jorge Daniel García Girón, Carné: B12703
-# Rutina para la obtención, transformación y reproyección de los 
-# productos SMAP Soil Moisture de resolución 9 x 9 Kilómetros
+# University of Costa Rica
+# Workshop specialized in GIS and Remote Sensing
+# II Cycle 2018
+# Student: Jorge Daniel García Girón, Card: B12703
+# Routine for obtaining, processing and reprojection of SMAP Soil Moisture products with a resolution of 9 x 9 kilometers
 
 # Paquetes requeridos SMAPR (excludsivo para datos de SMAP) para 
 # obtencion y descarga de datos y RASTER para la tranformación y 
