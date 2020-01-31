@@ -4,72 +4,66 @@
 # Student: Jorge Daniel García Girón, Card: B12703
 # Routine for obtaining, processing and reprojection of SMAP Soil Moisture products with a resolution of 9 x 9 kilometers
 
-# Paquetes requeridos SMAPR (excludsivo para datos de SMAP) para 
-# obtencion y descarga de datos y RASTER para la tranformación y 
-# reproyección.
+# SMAPR required packages (exclusive for SMAP data) for obtaining and downloading data and RASTER for the transformation and reprojection.
 
 require('smapr')
 require('raster')
 
-# Insertar credenciales en repositorio de datos NASA EarthData.
+# Insert credentials in NASA EarthData data repository.
 
 Sys.setenv(ed_un = 'username', ed_pw = 'password')
 
-# Busqueda de producto por categoría, fecha, versión.
-# Para buscar producto en un rango de fechas:
+# Product search by category, date, version.
+# To search for a product in a range of dates:
+
 start_date <- as.Date("2018-06-28")
 end_date <- as.Date("2018-06-30")
 date_sequence <- seq(start_date, end_date, by = 1)
 available_data <- find_smap(id = "SPL4SMAU", dates = date_sequence, version = 4)
-
 # available_data <- find_smap(id = "SPL4SMAU", dates = "2016-03-08", version = 4)
 
-# Descripcion de producto encontrado.
+# Product description found.
 
 str(available_data)
 
-# Descarga de producto encontrado.
+# Download of product found.
 
 # downloads <- download_smap(available_data[8, ], 'G:/Prueba')
+local_files <- download_smap(available_data, "directory folder", overwrite = FALSE, verbose = FALSE)
 
-local_files <- download_smap(available_data, "C:/SM", overwrite = FALSE, verbose = FALSE)
-
-# Guardar el objeto que contiene el producto descargado en caso
-# tener que volver a procesarlo en la misma rutina.
+# Save the R object that contains the downloaded product in case you have to reprocess it in the same routine.
 
 # save(local_files, file = "F:/Datos_Soil/File_7_4_2015.RData")
 
-# Descripción del producto descargado.
+# Description of the downloaded product.
 
 str(local_files)
 
-# Lista de repositorio de informacion almacenada en el producto
-# .h5 descargado.
+# Repository list of information stored in the downloaded .h5 product.
 
 list_smap(local_files[1, ])
 
-# Con el tipo de dato requerido identificado se procede a extraerlo
-# del repositorio .h5 para asignarlo a un objeto.  
+# With the type of data required and identified, proceed to extract it from the .h5 file to assign it to an R object.
 
 sm_raster <- extract_smap(local_files, '/Analysis_Data/sm_rootzone_analysis')  
 
-# Recorte de área de estudio segun vectorial de América Central (cuadrante).
+# Clip of study area according to Central America vector (quadrant).
 
 AC <- shapefile("Shapefile file delimitation")
 proj_ac_extent <- spTransform(AC, crs(sm_raster))
 ac_soil_moisture <- crop(sm_raster, proj_ac_extent)
 # ac_soil_moisture_m <- mask(ac_soil_moisture, proj_ac_extent)
 
-# Se calcula el valor promedio para los 15 días
+# The average value is calculated for the days downloaded.
 
 mean_sm <- calc(ac_soil_moisture_m, fun = mean)
 
-# Se visualiza el producto extraído.
+# The extracted product is displayed.
 
 plot(mean_sm)
 
-# Se transforma esta capa en un archivo raster de formato GEOTIFF.
+# This layer is transformed into a raster file of GEOTIFF format.
 
 writeRaster(mean_sm, "directory/file.tif", NAflag = -9999, overwrite = T)
 
-# Fin de rutina.
+# End of code.
