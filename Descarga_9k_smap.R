@@ -1,22 +1,22 @@
 # Universidad de Costa Rica
-# Taller especializado en SIG y Teledetección
+# Taller especializado en SIG y TeledetecciÃ³n
 # II Ciclo 2018
-# Estudiante: Jorge Daniel García Girón, Carné: B12703
-# Rutina para la obtención, transformación y reproyección de los 
-# productos SMAP Soil Moisture de resolución 9 x 9 Kilómetros
+# Estudiante: Jorge Daniel GarcÃ­a GirÃ³n, CarnÃ©: B12703
+# Rutina para la obtenciÃ³n, transformaciÃ³n y reproyecciÃ³n de los 
+# productos SMAP Soil Moisture de resoluciÃ³n 9 x 9 KilÃ³metros
 
 # Paquetes requeridos SMAPR (excludsivo para datos de SMAP) para 
-# obtencion y descarga de datos y RASTER para la tranformación y 
-# reproyección.
+# obtencion y descarga de datos y RASTER para la tranformaciÃ³n y 
+# reproyecciÃ³n.
 
 require('smapr')
 require('raster')
 
 # Insertar credenciales en repositorio de datos NASA EarthData.
 
-Sys.setenv(ed_un = 'jorge_daniel', ed_pw = 'Geo.ucr10')
+Sys.setenv(ed_un = 'username', ed_pw = 'password')
 
-# Busqueda de producto por categoría, fecha, versión.
+# Busqueda de producto por categorÃ­a, fecha, versiÃ³n.
 # Para buscar producto en un rango de fechas:
 start_date <- as.Date("2018-06-28")
 end_date <- as.Date("2018-06-30")
@@ -38,9 +38,9 @@ local_files <- download_smap(available_data, "C:/SM", overwrite = FALSE, verbose
 # Guardar el objeto que contiene el producto descargado en caso
 # tener que volver a procesarlo en la misma rutina.
 
-save(local_files, file = "F:/Datos_Soil/File_7_4_2015.RData")
+# save(local_files, file = "F:/Datos_Soil/File_7_4_2015.RData")
 
-# Descripción del producto descargado.
+# DescripciÃ³n del producto descargado.
 
 str(local_files)
 
@@ -54,23 +54,23 @@ list_smap(local_files[1, ])
 
 sm_raster <- extract_smap(local_files, '/Analysis_Data/sm_rootzone_analysis')  
 
-# Recorte de área de estudio segun vectorial de América Central (cuadrante).
+# Recorte de Ã¡rea de estudio segun vectorial de AmÃ©rica Central (cuadrante).
 
-AC <- shapefile("F:/AC_adm0.shp")
+AC <- shapefile("Shapefile file delimitation")
 proj_ac_extent <- spTransform(AC, crs(sm_raster))
 ac_soil_moisture <- crop(sm_raster, proj_ac_extent)
 # ac_soil_moisture_m <- mask(ac_soil_moisture, proj_ac_extent)
 
-# Se calcula el valor promedio para los 15 días
+# Se calcula el valor promedio para los 15 dÃ­as
 
 mean_sm <- calc(ac_soil_moisture_m, fun = mean)
 
-# Se visualiza el producto extraído.
+# Se visualiza el producto extraÃ­do.
 
 plot(mean_sm)
 
 # Se transforma esta capa en un archivo raster de formato GEOTIFF.
 
-writeRaster(mean_sm, "F:/Prueba/9K/ac_soil_raster_28_30_6_2018.tif", NAflag = -9999, overwrite = T)
+writeRaster(mean_sm, "directory/file.tif", NAflag = -9999, overwrite = T)
 
 # Fin de rutina.
