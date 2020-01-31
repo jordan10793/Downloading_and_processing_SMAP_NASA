@@ -13,7 +13,7 @@ require('raster')
 
 Sys.setenv(ed_un = 'username', ed_pw = 'password')
 
-# Product search by category, date, version.
+# Product search by category, date, version (example code SPL4SMAU, https://nsidc.org/data/smap/smap-data.html).
 # To search for a product in a range of dates:
 
 start_date <- as.Date("2018-06-28")
@@ -28,7 +28,7 @@ str(available_data)
 
 # Download of product found.
 
-# downloads <- download_smap(available_data[8, ], 'G:/Prueba')
+# downloads <- download_smap(available_data[8, ], 'directory folder')
 local_files <- download_smap(available_data, "directory folder", overwrite = FALSE, verbose = FALSE)
 
 # Save the R object that contains the downloaded product in case you have to reprocess it in the same routine.
