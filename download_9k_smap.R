@@ -13,7 +13,7 @@ require('raster')
 
 Sys.setenv(ed_un = 'username', ed_pw = 'password')
 
-# Product search by category, date, version (example code SPL4SMAU, https://nsidc.org/data/smap/smap-data.html).
+# Product search by category, date, version (example Data Set ID: SPL4SMAU, https://nsidc.org/data/smap/smap-data.html).
 # To search for a product in a range of dates:
 
 start_date <- as.Date("2018-06-28")
